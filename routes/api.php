@@ -36,7 +36,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/add-reviews', [ShopController::class, 'store']);
 
     Route::post('/cart/add', [CartController::class, 'addToCart']);
-    Route::delete('/cart/remove', [CartController::class, 'removeFromCart']);
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
     Route::get('/cart', [CartController::class, 'viewCart']);
     Route::get('/cart/count', function () {
         $cartItems =Cart::where('user_id', auth()->id())->get();
