@@ -44,8 +44,8 @@ class CartController extends Controller
     public function removeFromCart(Request $request)
     {
         $userId = auth()->id();
-        $productId = $request->input('product_id');
-        $size = $request->input('size');
+        $productId = $request->product_id;
+        $size = $request->size;
     
         $cartItem = Cart::where('user_id', $userId)
                         ->where('product_id', $productId)
