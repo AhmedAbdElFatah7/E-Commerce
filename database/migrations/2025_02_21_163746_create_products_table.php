@@ -15,9 +15,10 @@ return new class extends Migration {
             $table->integer('discount')->default(0);
             $table->decimal('rate', 3, 2)->default(0.00);
             $table->integer('sell')->default(0);
+            $table->integer('trend')->nullable();
             $table->string('category')->nullable();
+            $table->string('sub_category')->nullable();
             $table->timestamps();
-
         });
     }
 

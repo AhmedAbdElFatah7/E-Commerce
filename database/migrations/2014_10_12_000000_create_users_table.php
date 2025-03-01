@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->date('date');
             $table->string('image')->nullable();
+            $table->string('Location')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

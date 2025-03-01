@@ -45,4 +45,27 @@ class ProductController extends Controller
             'product' => $product
         ],201);
     }
+    public function store(Request $request)
+    {
+        $valedator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'reviews' => 'nullable|integer|min:0',
+            'discount' => 'nullable|integer|min:0|max:100',
+            'rate' => 'nullable|numeric|min:0|max:5',
+            'sell' => 'nullable|integer|min:0',
+            'trend' => 'nullable|integer',
+            'category' => 'nullable|string|max:255',
+            'sub_category' => 'nullable|string|max:255',
+        ]);
+        if ($valedator->fails()) {
+            return response()->json(['errors' => $valedator->errors()], 422);
+        }
+        $product = Product::create($valedator->validated());
+
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product
+        ], 201);
+    }
 }
