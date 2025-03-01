@@ -52,7 +52,7 @@ class CartController extends Controller
                         ->where('size', $size)
                         ->first();
 
-    return response()->json($cartItem );
+    return response()->json($size,$productId , $userId);
         if (!$cartItem) {
             return response()->json(['message' => 'Item not found in cart'], 404);
         }
