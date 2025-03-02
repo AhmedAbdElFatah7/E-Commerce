@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Checkout\CheckoutController;
+use App\Http\Controllers\Checkout\LocationController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Shop\ShopController;
@@ -34,6 +36,13 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
 
     Route::post('/add-reviews', [ShopController::class, 'store']);
+
+    Route::post('/checkout', [CheckoutController::class, 'checkout']);
+    Route::get('/checkout-info', [LocationController::class, 'checkout']);
+    Route::post('/store-Location', [LocationController::class, 'storeLocation']);
+
+
+
 
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::post('/cart/remove', [CartController::class, 'removeFromCart']);

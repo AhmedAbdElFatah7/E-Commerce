@@ -63,11 +63,22 @@ public function removeFromCart(Request $request)
 
     public function viewCart()
     {
-        $cartItems = Cart::where('user_id', auth()->id())->select( 'product_id', 'quantity', 'size')->with('product')->get();
-        $totalItems = $cartItems->sum('quantity');
-        return response()->json([
-            'cart' => $cartItems,
-            'total_items' => $totalItems,
-        ]);
+        $cartItems = Cart::where('user_id', auth()->id())
+        ->select('product_id', 'quantity', 'size')
+        ->with('product:id,name,price,discount')
+        ->get();
+    
+    $totalPrice = $cartItems->sum(function ($cartItem) {
+        return $cartItem->product->price_after_discount * $cartItem->quantity;
+    });
+    
+    $totalItems = $cartItems->sum('quantity');
+    
+    return response()->json([
+        'cart' => $cartItems,
+        'total_items' => $totalItems,
+        'sub_total' => $totalPrice,
+    ]);
+    
     }
 }

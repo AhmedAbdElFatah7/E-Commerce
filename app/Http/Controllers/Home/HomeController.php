@@ -11,7 +11,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $men = Product::where('category', 'men')->where('trend',1)
+        $men = Product::where('category', 'men')
+        ->where('trend',1)
         ->leftJoin('images', 'images.product_id', '=', 'products.id')
         ->select('products.id', 'images.image_1')
         ->get();
@@ -27,12 +28,10 @@ class HomeController extends Controller
         ->select('products.id', 'images.image_1')
         ->get();
         
-        $count =Cart::where('user_id', auth()->id())->get();
         return response()->json( 
         ['men' =>$men ,
         'women' => $women ,
         'top_rated' => $top_rated,
-        'count' => $count,
         ] ,200 );
     }
     public function men(Request $request)
