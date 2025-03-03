@@ -34,6 +34,7 @@ class LocationController extends Controller
     public function storeLocation(Request $request)
     {
         $userId = auth()->id();
+    
         $request->validate([
             'full_name' => 'required|string',
             'email' => 'required|email',
@@ -41,18 +42,21 @@ class LocationController extends Controller
             'city' => 'required|string',
             'country' => 'required|string'
         ]);
-        $location = Location::updateorCreate([
-            'user_id' => $userId,
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'street_address' => $request->street_address,
-            'city' => $request->city,
-            'country' => $request->country,
-        ]);
-
+        $location = Location::updateOrCreate(
+            ['user_id' => $userId], 
+            [
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'street_address' => $request->street_address,
+                'city' => $request->city,
+                'country' => $request->country,
+            ]
+        );
+    
         return response()->json([
-            'message' => 'User details stored successfully',
+            'message' => 'User location stored successfully',
             'location' => $location,
         ], 201);
     }
+    
 }
