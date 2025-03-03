@@ -41,7 +41,7 @@ class LocationController extends Controller
             'city' => 'required|string',
             'country' => 'required|string'
         ]);
-        $location = Location::create([
+        $location = Location::updateorCreate([
             'user_id' => $userId,
             'full_name' => $request->full_name,
             'email' => $request->email,

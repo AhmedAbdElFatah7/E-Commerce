@@ -6,6 +6,7 @@ use App\Http\Controllers\Checkout\CheckoutController;
 use App\Http\Controllers\Checkout\LocationController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Shop\ShopController;
 use App\Models\Cart;
 use Illuminate\Http\Request;
@@ -41,8 +42,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/checkout-info', [LocationController::class, 'checkout']);
     Route::post('/store-Location', [LocationController::class, 'storeLocation']);
 
-
-
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::get('/profile/image', [ProfileController::class, 'uploadImage']);
+    Route::get('/profile/update', [ProfileController::class, 'update']);
 
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::post('/cart/remove', [CartController::class, 'removeFromCart']);

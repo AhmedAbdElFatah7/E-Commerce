@@ -19,9 +19,9 @@ class ProductController extends Controller
         $valedator = Validator::make($request->all(), [
             'product_id' => 'required|integer',
             'image_1' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'image_2' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'image_3' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'image_4' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image_2' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image_3' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image_4' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
         if ($valedator->fails()) {
             return response()->json(['errors' => $valedator->errors()], 422);
