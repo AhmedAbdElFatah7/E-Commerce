@@ -49,10 +49,7 @@ class ProfileController extends Controller
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-        return response()->json([
-            'message' => 'Image uploaded successfully',
-            'user' => $user,
-        ], 201);
+        
         $image = cloudinary()->upload($request->file('image')->getRealPath())->getSecurePath();
 
         $user->image = $image;
