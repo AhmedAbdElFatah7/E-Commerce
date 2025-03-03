@@ -17,7 +17,7 @@ class ProfileController extends Controller
         $lastName = $user->last_name;  
         $fullName = $firstName . ' ' . $lastName;
         $address = Location::where('user_id', auth()->id())->first();
-        $orders =Order::where('user_id', auth()->id())->with('items.product')->get();
+        $orders =Order::where('user_id', auth()->id())->get();
         return response()->json([
             'full_name' => $fullName,
             'first_name' => $user->first_name,
@@ -49,7 +49,11 @@ class ProfileController extends Controller
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-        $image = cloudinary()->upload($request->file('image_1')->getRealPath())->getSecurePath();
+        return response()->json([
+            'message' => 'Image uploaded successfully',
+            'user' => $user,
+        ], 201);
+        $image = cloudinary()->upload($request->file('image')->getRealPath())->getSecurePath();
 
         $user->image = $image;
         $user->save();
