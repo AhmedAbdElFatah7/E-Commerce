@@ -27,10 +27,19 @@ class ProductController extends Controller
             return response()->json(['errors' => $valedator->errors()], 422);
         }
         $product=Product::find($request->product_id);
+
         $image_1 = cloudinary()->upload($request->file('image_1')->getRealPath())->getSecurePath();
+
+        if ($request->file('image_2')) {
         $image_2 = cloudinary()->upload($request->file('image_2')->getRealPath())->getSecurePath();
-        $image_3 = cloudinary()->upload($request->file('image_3')->getRealPath())->getSecurePath();
-        $image_4 = cloudinary()->upload($request->file('image_4')->getRealPath())->getSecurePath();
+        }
+         if ($request->file('image_3')) {
+            $image_3 = cloudinary()->upload($request->file('image_3')->getRealPath())->getSecurePath();
+
+        }
+        if ($request->file('image_4')) {
+            $image_4 = cloudinary()->upload($request->file('image_4')->getRealPath())->getSecurePath();
+        }
 
         $image = Image::updateOrCreate(
             ['product_id' => $request->product_id], 
