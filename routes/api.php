@@ -43,8 +43,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/store-Location', [LocationController::class, 'storeLocation']);
 
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::get('/profile/image', [ProfileController::class, 'uploadImage']);
-    Route::get('/profile/update', [ProfileController::class, 'update']);
+    Route::post('/profile/image', [ProfileController::class, 'uploadImage']);
+    Route::post('/profile/update', [ProfileController::class, 'update']);
 
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
