@@ -26,12 +26,15 @@ class ProductController extends Controller
         if ($valedator->fails()) {
             return response()->json(['errors' => $valedator->errors()], 422);
         }
+        
         $product=Product::find($request->product_id);
 
         $image_1 = cloudinary()->upload($request->file('image_1')->getRealPath())->getSecurePath();
-
+        $image_2 = null;
+        $image_3 = null;
+        $image_4 = null; 
         if ($request->file('image_2')) {
-        $image_2 = cloudinary()->upload($request->file('image_2')->getRealPath())->getSecurePath();
+            $image_2 = cloudinary()->upload($request->file('image_2')->getRealPath())->getSecurePath();
         }
          if ($request->file('image_3')) {
             $image_3 = cloudinary()->upload($request->file('image_3')->getRealPath())->getSecurePath();
