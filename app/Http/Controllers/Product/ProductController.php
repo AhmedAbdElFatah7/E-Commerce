@@ -32,14 +32,15 @@ class ProductController extends Controller
         $image_3 = cloudinary()->upload($request->file('image_3')->getRealPath())->getSecurePath();
         $image_4 = cloudinary()->upload($request->file('image_4')->getRealPath())->getSecurePath();
 
-        $image = new Image ; 
-        $image->image_1 = $image_1;
-        $image->image_2 = $image_2;
-        $image->image_3 = $image_3;
-        $image->image_4 = $image_4;
-        $image->product_id = $request->product_id;
-        $image->save();   
-        
+        $image = Image::updateOrCreate(
+            ['product_id' => $request->product_id], 
+            [
+                'image_1' => $image_1,
+                'image_2' => $image_2,
+                'image_3' => $image_3,
+                'image_4' => $image_4,
+            ]
+        );
         return response()->json([
             'message' => 'Image uploaded successfully',
             'image' => $image,
