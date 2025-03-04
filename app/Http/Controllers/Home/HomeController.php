@@ -51,12 +51,12 @@ class HomeController extends Controller
             $men = $men->where('sub_category', $request->category)
             ->where('price', '>=', $low_price)
             ->where('price', '<=', $max_price)
-            ->get();
+            ->paginate(12);
 
         } else {
             $men = $men->where('price', '>=', $low_price)
             ->where('price', '<=', $max_price)
-            ->get();
+            ->paginate(12);
         }
 
         return response()->json([
@@ -81,12 +81,12 @@ class HomeController extends Controller
             $women = $women->where('sub_category', $request->category)
             ->where('price', '>=', $low_price)
             ->where('price', '<=', $max_price)
-            ->get();
+            ->paginate(12);
 
         } else {
             $women = $women->where('price', '>=', $low_price)
             ->where('price', '<=', $max_price)
-            ->get();
+            ->paginate(12);
         }
 
         return response()->json([
