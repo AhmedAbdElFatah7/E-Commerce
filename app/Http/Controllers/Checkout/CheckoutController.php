@@ -17,17 +17,17 @@ class CheckoutController extends Controller
     {
         $userId = auth()->id();
         $cartItems = Cart::where('user_id', $userId)->with('product')->get();
-
+    
         if ($cartItems->isEmpty()) {
             return response()->json(['message' => 'Cart is empty'], 400);
         }
-
+    
         $totalPrice = $cartItems->sum(function ($cartItem) {
             return $cartItem->product->price_after_discount * $cartItem->quantity;
         });
-
+    
         DB::beginTransaction();
-
+    
         try {
             $order = Order::create([
                 'user_id' => $userId,
@@ -35,7 +35,7 @@ class CheckoutController extends Controller
                 'total_price' => $totalPrice,
                 'status' => 'pending',
             ]);
-
+    
             foreach ($cartItems as $cartItem) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -44,15 +44,17 @@ class CheckoutController extends Controller
                     'size' => $cartItem->size,
                     'price' => $cartItem->product->price_after_discount,
                 ]);
+                  $product = Product::find($cartItem->product_id);
+                if ($product) {
+                    $product->sell += $cartItem->quantity;
+                    $product->save();
+                }
             }
-            $product = Product::find($cartItem->product_id);
-            $product->sell += $cartItem->quantity;
-            $product->save();
-
+    
             Cart::where('user_id', $userId)->delete();
-
+    
             DB::commit();
-
+    
             return response()->json([
                 'message' => 'Order placed successfully',
                 'order_number' => $order->order_number,
@@ -63,4 +65,5 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Checkout failed', 'error' => $e->getMessage()], 500);
         }
     }
+    
 }
