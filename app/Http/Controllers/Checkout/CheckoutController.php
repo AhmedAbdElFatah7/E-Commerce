@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +45,9 @@ class CheckoutController extends Controller
                     'price' => $cartItem->product->price_after_discount,
                 ]);
             }
+            $product = Product::find($cartItem->product_id);
+            $product->sell += $cartItem->quantity;
+            $product->save();
 
             Cart::where('user_id', $userId)->delete();
 
