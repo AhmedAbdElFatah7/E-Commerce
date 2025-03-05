@@ -24,6 +24,7 @@ class ProfileController extends Controller
             'last_name' => $user->last_name,
             'email' => $user->email, 
             'phone' => $user->phone,
+            'image' => $user->image,
             'location' => $user->Location,
             'address' => $address,
             'orders' => $orders
