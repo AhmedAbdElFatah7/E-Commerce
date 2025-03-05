@@ -53,7 +53,12 @@ class ShopController extends Controller
     public function getReviews(Request $request)
     {
         $reviews = Review::where('product_id', $request->product_id)->with('user')->latest()->get();
+        $commentsCount = Review::where('product_id', $request->product_id)->count();
+
         
-        return response()->json($reviews);
+        return response()->json([
+            'reviews'=> $commentsCount ,
+            'data' => $reviews
+        ], 200);
     }
 }
