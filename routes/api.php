@@ -49,6 +49,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
     Route::get('/cart', [CartController::class, 'viewCart']);
+    Route::post('/cart/decrement', [CartController::class, 'decrementCartItem']);
     Route::get('/cart/count', function () {
         $cartItems =Cart::where('user_id', auth()->id())->get();
     

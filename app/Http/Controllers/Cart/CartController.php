@@ -60,6 +60,29 @@ public function removeFromCart(Request $request)
 
     return response()->json(['message' => 'Product removed from cart'], 200);
 }
+public function decrementCartItem(Request $request)
+{
+    $userId = auth()->id();
+    $productId = $request->input('product_id');
+    $size = $request->input('size');
+
+    $cartItem = Cart::where('user_id', $userId)
+                    ->where('product_id', $productId)
+                    ->where('size', $size)
+                    ->first();
+
+    if (!$cartItem) {
+        return response()->json(['message' => 'Item not found in cart'], 404);
+    }
+
+    if ($cartItem->quantity > 1) {
+        $cartItem->decrement('quantity');
+    } else {
+        $cartItem->delete();
+    }
+
+    return response()->json(['message' => 'Product quantity updated'], 200);
+}
 
     public function viewCart()
     {
