@@ -33,11 +33,28 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = User::find(auth()->id());
+        $firstName = $user->first_name;
+        $lastName = $user->last_name;  
+        $fullName = $firstName . ' ' . $lastName;
+
+        $location = Location::where('user_id', auth()->id())->first();
+        if (!$location) {
+            $location = new Location();
+            $location->user_id = auth()->id();
+        }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->Location = $request->Location;
+        $location->full_name = $fullName; 
+        $location->email = $request->email;
+
+        $location->street_address = $request->street_address;
+        $location->city = $request->city;
+        $location->country = $request->country;
+
+        $location->save();
         $user->save();
         return response()->json([
             'message' => 'User details updated successfully',
