@@ -37,17 +37,18 @@ class ProfileController extends Controller
         $firstName = $user->first_name;
         $lastName = $user->last_name;  
         $fullName = $firstName . ' ' . $lastName;
-        $valedate = Validator::make($request->all(), [
+        $validate = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|min:10|max:15|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->id(),
+            'phone' => 'required|string|min:10|max:15|unique:users,phone,' . auth()->id(),
             'street_address' => 'required|string',
             'city' => 'required|string',
             'country' => 'required|string',
         ]);
-        if ($valedate->fails()) {
-            return response()->json(['errors' => $valedate->errors()], 422);
+        
+        if ($validate->fails()) {
+            return response()->json(['errors' => $validate->errors()], 422);
         }
 
         $location = Location::where('user_id', auth()->id())->first();
