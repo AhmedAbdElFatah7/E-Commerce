@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Location;
+use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
 {
@@ -34,14 +35,17 @@ class LocationController extends Controller
     public function storeLocation(Request $request)
     {
         $userId = auth()->id();
-    
-        $request->validate([
+        $valedator = Validator::make($request->all(), [
             'full_name' => 'required|string',
             'email' => 'required|email',
             'street_address' => 'required|string',
             'city' => 'required|string',
             'country' => 'required|string'
         ]);
+        if ($valedator->fails()) {
+            return response()->json(['errors' => $valedator->errors()], 422);
+        }
+  
         $location = Location::updateOrCreate(
             ['user_id' => $userId], 
             [

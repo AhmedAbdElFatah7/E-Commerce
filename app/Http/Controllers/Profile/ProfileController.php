@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -36,6 +37,18 @@ class ProfileController extends Controller
         $firstName = $user->first_name;
         $lastName = $user->last_name;  
         $fullName = $firstName . ' ' . $lastName;
+        $valedate = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|min:10|max:15|unique:users',
+            'street_address' => 'required|string',
+            'city' => 'required|string',
+            'country' => 'required|string',
+        ]);
+        if ($valedate->fails()) {
+            return response()->json(['errors' => $valedate->errors()], 422);
+        }
 
         $location = Location::where('user_id', auth()->id())->first();
         if (!$location) {
