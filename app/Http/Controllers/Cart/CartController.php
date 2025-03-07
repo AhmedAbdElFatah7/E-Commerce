@@ -88,8 +88,7 @@ public function decrementCartItem(Request $request)
     {
         $cartItems = Cart::where('user_id', auth()->id())
         ->select('product_id', 'quantity', 'size')
-        ->with('product:id,name,price,discount',)
-        ->leftJoin('images', 'images.product_id', '=', 'products.id')
+        ->with('product:id,name,price,discount','product.images:id,product_id,image_1')
         ->get();
     
     $totalPrice = $cartItems->sum(function ($cartItem) {
